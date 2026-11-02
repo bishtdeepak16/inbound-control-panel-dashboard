@@ -1,31 +1,108 @@
-# Inbound Control Panel — Demo
+<div align="center">
 
-A **demo version** of a live inbound-operations dashboard that I designed and built for a multi-FC warehousing and fulfillment operation, with three role-based views for different decision makers.
+# Inbound Control Panel
 
-> **All data in this demo is synthetic** (random appointments, clients, FCs and units). The production dashboard and its data are private to the company.
+**Inbound appointment, gate and unloading visibility for fulfillment centres**
 
-**Live demo:** open `index.html` (GitHub Pages).
+<sub>Three role-based views (CXO · Planner · Ops) · automated weekly AI report</sub>
 
-## Views
-- **CXO — Business Performance:** appointment fulfilment %, scheduled-date adherence, same-day clearance %, detention rate, damage + shortage %, median gate-to-gate TAT, null (wasted-slot) rate; monthly volume trend, top FCs and clients by volume, appointment classification, category mix.
-- **Planner — Supply Control:** 14-day upcoming load by FC, open appointments at risk, brand show rate, scheduling lead time, projected-vs-realised variance.
-- **Ops — Ground Execution:** today's gate-ins, loading status, same-day SLA risk, FC operations scorecard, TAT distribution by client, unloading TAT by vehicle size, manpower efficiency, pending-clearance aging, gate-in / gate-out heatmaps.
-- **AI report:** weekly and month-to-date performance summary with metric comparison and recommended actions (rule-based text in this demo).
+<br>
 
-## Engineering notes
-- Handles messy source data: mixed date and number formats, timestamp year errors, client-name variants (normalised and de-duplicated).
-- Role- and FC-scoped access, auto-refresh, Excel/CSV exports, PDF report download.
+[**▶ Live Demo**](https://bishtdeepak16.github.io/inbound-control-panel-dashboard/) &nbsp;·&nbsp;
+[**Weekly AI email (sample)**](https://bishtdeepak16.github.io/inbound-control-panel-dashboard/report-sample-weekly-email.html)
+
+</div>
+
+<br>
+
+> **The live demo uses synthetic data.** All appointments, clients and FCs in it are generated in the browser. The production system, its code and its data are private to the company; production screenshots below are masked. This repo shows the product, not company data.
+
+---
+
+## What it does
+Every inbound truck is booked as an appointment, arrives at the gate, unloads at the dock and is checked for damage and shortage. The panel gives each audience what it needs:
+- **Leadership (CXO):** are we fulfilling appointments, clearing them the same day, and keeping damage and shortage low?
+- **Planners:** what is arriving in the next 14 days, which appointments are at risk and how reliable is each brand?
+- **Operations:** how fast are trucks turned around, where is manpower being wasted and what is pending clearance?
+
+## Highlights
+- **CXO view:** monthly volume trend, top FCs and clients by good units, appointment classification, damage + shortage rate by client, with KPIs for appointment fulfilment %, same-day clearance %, detention rate and null (wasted-slot) rate.
+- **Planner view:** 14-day upcoming load by FC, open appointments at risk, brand show rate, scheduling lead time and projected-vs-realised variance, so supply is planned before trucks arrive.
+- **Ops view:** FC operations scorecard, TAT distribution by client, unloading TAT by vehicle size, manpower efficiency, pending-clearance aging and gate-in / gate-out arrival heatmaps.
+- **Data-accuracy layer:** handles inconsistent date and number formats, corrects timestamp errors and normalises and de-duplicates client names, so KPIs stay reliable despite a messy source sheet.
+- **Access control:** Google sign-in with a user-access panel; filterable by FC, client and date.
+- **Automated weekly AI report:** every Monday 10 AM IST an HTML email goes to stakeholders with a week-on-week comparison, client tables (priority clients flagged), highlights, concerns and recommended actions. Numbers are computed in the dashboard and the same payload is emailed, so the report always matches the dashboard; the LLM only writes the commentary.
 
 ## Stack
-JavaScript · Chart.js · Google Sheets and Apps Script (production data source) · LLM summaries
+HTML / JS · Chart.js · Google Sheets (live source) · Google Apps Script (mailer and scheduler) · Cloudflare Worker (secure LLM proxy) · Groq LLM
 
-## About this demo
-`mock-inbound.js` replaces the private data source, user list, LLM proxy and email service with a synthetic data generator that returns the same shapes, so the original dashboard runs unchanged as a static page.
+---
 
-![CXO](docs/cxo-view.png)
-![Planner](docs/planner-view.png)
-![Ops](docs/ops-view.png)
-![AI report](docs/ai-report.png)
+<div align="center">
 
-## Weekly AI email (sample)
-`report-sample-weekly-email.html` is a sample of the automated Monday 10 AM IST email (week-on-week + month-to-date, client tables, highlights, concerns, recommended actions), generated from synthetic demo data. Open it directly in a browser.
+## 📸 Screenshots
+
+<sub>Real dashboard. Client names, IDs and sensitive figures are masked.</sub>
+
+<br>
+
+**CXO view**
+
+<img src="Dashboard%20images/cxo-view.png" width="92%" alt="CXO view">
+
+<br><br>
+
+**Planner view**
+
+<img src="Dashboard%20images/planner-view.png" width="92%" alt="Planner view">
+
+<br><br>
+
+**Ops view**
+
+<img src="Dashboard%20images/ops-view.png" width="92%" alt="Ops view">
+
+<br><br>
+
+**AI Report · in-dashboard AI summary**
+
+<img src="Dashboard%20images/ai-report.png" width="92%" alt="AI report">
+
+<br><br>
+
+</div>
+
+---
+
+<div align="center">
+
+## 📧 Automated Weekly AI Report
+<sub>Sent every Monday to leadership. Numbers come from the dashboard; the AI only writes the commentary.</sub>
+
+<br>
+
+[**Download full report (PDF)**](Weekly%20AI%20Report/Inbound_Weekly_AI_Report_Sample.pdf) &nbsp;·&nbsp;
+[**Open as HTML email**](https://bishtdeepak16.github.io/inbound-control-panel-dashboard/report-sample-weekly-email.html)
+
+<br>
+
+**Page 1 of 2**
+
+<img src="Weekly%20AI%20Report/inbound-report-page-1.png" width="75%" alt="Weekly report page 1">
+
+<br><br>
+
+**Page 2 of 2**
+
+<img src="Weekly%20AI%20Report/inbound-report-page-2.png" width="75%" alt="Weekly report page 2">
+
+<br>
+
+<sub>Sample built from synthetic data.</sub>
+
+</div>
+
+---
+
+## About the live demo
+`mock-inbound.js` generates synthetic appointment data in the browser and stands in for the private Google Sheets source, user list, LLM proxy and mailer, so the real front-end runs unchanged as a static page. No login or backend is needed.
